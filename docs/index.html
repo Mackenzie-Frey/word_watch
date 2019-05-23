@@ -12,36 +12,30 @@
     <section class="text-submission">
       <h2 tabindex="0">Word <span>Watch</span> 👀</h2>
       <script>
-        // function postWord() {
-          // ("button").on("click", function() {
+        document.querySelector("button").onclick = function(){
+        var url = 'https://wordwatch-api.herokuapp.com/api/v1/words';
 
-          // object.addEventListener("click", myScript);
-          
-          document.querySelector("button").onclick = function(){
+        await Promise.all(document.querySelector("textarea").value.split(" ").map(async word => {
 
-            var url = 'https://wordwatch-api.herokuapp.com/api/v1/words';
-            var data = {
-              "word": {
-                "value": document.querySelector("textarea").value
-              }
-            };
-
-            fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-              }).then(res => res.json())
-              .then(response => console.log('Success:', JSON.stringify(response.message)))
-              .catch(error => console.error('Error:', error));
-
+        var data = {
+          "word": {
+            "value": word
           }
-          // });
-        // }
+        };
+
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then(res => res.json())
+          .then(response => console.log('Success:', JSON.stringify(response.message)))
+          .catch(error => console.error('Error:', error));
+
+        }))}
       </script>
-      <textarea onchange="alert('Your word was added!')" class='text-input-area' placeholder="Paste text here"></textarea>
-      <!-- <button id="button" onclick="postWord()">Break down</button> -->
+      <textarea onchange="alert('Your text was added!')" class='text-input-area' placeholder="Paste text here"></textarea>
       <button id="button">Break down</button>
     </section>
 
