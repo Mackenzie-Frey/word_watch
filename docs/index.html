@@ -12,28 +12,31 @@
     <section class="text-submission">
       <h2 tabindex="0">Word <span>Watch</span> 👀</h2>
       <script>
-        document.querySelector("button").onclick = function(){
-        var url = 'https://wordwatch-api.herokuapp.com/api/v1/words';
+        document.querySelector("button").onclick = function() {
+          const url = 'https://wordwatch-api.herokuapp.com/api/v1/words';
 
-        await Promise.all(document.querySelector("textarea").value.split(" ").map(async word => {
+          async function() {
+            await Promise.all(document.querySelector("textarea").value.split(" ").map(async word => {
 
-        var data = {
-          "word": {
-            "value": word
+              var data = {
+                "word": {
+                  "value": word
+                }
+              };
+
+              fetch(url, {
+                  method: 'POST',
+                  body: JSON.stringify(data),
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                }).then(res => res.json())
+                .then(response => console.log('Success:', JSON.stringify(response.message)))
+                .catch(error => console.error('Error:', error));
+
+            }))
           }
-        };
-
-        fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }).then(res => res.json())
-          .then(response => console.log('Success:', JSON.stringify(response.message)))
-          .catch(error => console.error('Error:', error));
-
-        }))}
+        }
       </script>
       <textarea onchange="alert('Your text was added!')" class='text-input-area' placeholder="Paste text here"></textarea>
       <button id="button">Break down</button>
