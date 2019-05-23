@@ -1,26 +1,53 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Word Watch 👀</title>
-    <script src="bundle.js"></script>
-    <meta name="viewport" content="width=device-width"/>
-  </head>
-  <body>
-    <main>
-      <section class="text-submission">
-        <h2 tabindex="0">Word <span>Watch</span> 👀</h2>
-        <textarea placeholder="Paste text here"></textarea>
-        <button>Break down</button>
-      </section>
 
-      <section class="word-data" tabindex="0">
-        <article class="top-word">
-          <h3>Top word from Word Watch API: </h3>
-        </article>
-        <article class="word-count" tabindex="0">
-          <div>
-            <script>
-              fetch('https://wordwatch-api.herokuapp.com/api/v1/top_word')
+<head>
+  <title>Word Watch 👀</title>
+  <script src="bundle.js"></script>
+  <meta name="viewport" content="width=device-width" />
+</head>
+
+<body>
+  <main>
+    <section class="text-submission">
+      <h2 tabindex="0">Word <span>Watch</span> 👀</h2>
+      <script>
+
+        (function(){
+      		('button').on("click", function () {
+
+            var url = 'https://wordwatch-api.herokuapp.com/api/v1/words';
+            var data = {
+              "word": {
+                "value": "testingThis"
+              }
+            };
+
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }).then(res => res.json())
+              .then(response => console.log('Success:', JSON.stringify(response.message)))
+              .catch(error => console.error('Error:', error));
+
+      		});
+        })
+      </script>
+      <textarea class='text-input-area' placeholder="Paste text here"></textarea>
+      <button class="button">Break down</button>
+    </section>
+
+    <section class="word-data" tabindex="0">
+      <article class="top-word">
+        <h3>Top word from Word Watch API: </h3>
+      </article>
+      <article class="word-count" tabindex="0">
+        <div>
+          <script>
+            fetch('https://wordwatch-api.herokuapp.com/api/v1/top_word')
               .then(function(response) {
                 return response.json();
               })
@@ -31,10 +58,11 @@
                 console.log(count);
                 document.querySelector('.word-count').innerHTML = `${word} - count: ${count}`;
               });
-            </script>
-          </div>
-        </article>
-      </section>
-    </main>
-  </body>
+          </script>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+
 </html>
